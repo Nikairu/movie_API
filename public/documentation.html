@@ -3,6 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <title>My Flix</title>
+    <style>
+      p {
+        margin: 0;
+      }
+      tr {
+        outline: thin solid;
+      }
+    </style>
   </head>
   <body>
     <h1>Documentation</h1>
@@ -12,5 +20,182 @@
       update their personal information, and create a list of their favorite
       movies.
     </p>
+    <table class="requests-table" style="width: 100%">
+      <caption>
+        REST API documentation
+      </caption>
+      <br />
+      <thead>
+        <tr class="headers">
+          <th scope="col">REQUEST - Business Logic</th>
+          <th scope="col">URL</th>
+          <th scope="col">HTTP Method</th>
+          <th scope="col">Request Data Format</th>
+          <th scope="col">Response Data Body Format</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td scope="row">Return a list of All movies to the user</td>
+          <td>/movies</td>
+          <td style="color: #c7254e">GET</td>
+          <td>None</td>
+          <td>A JSON object holding data about all movies</td>
+        </tr>
+        <tr>
+          <td scope="row">
+            Return data (description, genre, directors, Producers, etc) about a
+            single movie by title to the user
+          </td>
+          <td>/movies/:[Title]</td>
+          <td style="color: #c7254e">GET</td>
+          <td>None</td>
+          <td>
+            <pre>
+				<code>
+Example:
+{
+	"title": "Interstellar",
+	"Producers": [
+		"Emma Thomas",
+		"Christopher Nolan",
+		"Lynda Obst"
+	],
+	"Directors": [
+		"Christopher Nolan"
+	],
+	"genres": [
+		"Science fiction",
+		"drama"
+	]
+}
+				</code>
+			</pre>
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">Return data about a genre (description) by name.</td>
+          <td>movies/Genre/:[Name]</td>
+          <td style="color: #c7254e">GET</td>
+          <td>None</td>
+          <td>
+            A JSON object holding data about a genre (descriptio) by name.
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            Return data about a director (bio, birth year, death year) by name
+          </td>
+          <td>/movies/directors/:[Name]</td>
+          <td style="color: #c7254e">GET</td>
+          <td>None</td>
+          <td>
+            Example:
+            <pre>
+			<code>
+{
+	"name": "Christopher Nolan",
+	"bio": "Christopher Edward Nolan CBE (/ˈnoʊlən/; born 30 July 1970) is a British-American film director, producer and...
+	"birth_year": "1970",
+	"death_year": ""
+}
+			</code>
+			</pre>
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">Allow new users to register</td>
+          <td>/users</td>
+          <td style="color: #c7254e">POST</td>
+          <td>
+            Json containing at least the "name" property Example:
+            <pre><code>
+{
+	"name": "lenidiogo",
+	"password": "123+Qwe."
+}
+			</code></pre>
+          </td>
+
+          <td>
+            Example:
+            <pre><code>
+{
+	"name": "lenidiogo",
+	"password": "123+Qwe.",
+	"id": "24b994f6-8ed0-4889-9659-af983953773e"
+}
+</code></pre>
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            Allow users to update their user info (username, password, email,
+            date of birth)
+          </td>
+          <td>/users/:[Name]</td>
+          <td style="color: #c7254e">PUT</td>
+          <td>
+            Json containing at least an existing username.
+            <pre><code>
+{
+	"name": "lenidiogo",
+	"password": "123+Qwe.",
+	"birth_date": "11/01/1990"
+}
+			</code></pre>
+          </td>
+          <td>
+            A text message indicating whether the user's account has succesfully
+            changed.
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            Allow users to add a movie to their list of favorites
+          </td>
+          <td>/users/:[Name]/addFavouriteMovie</td>
+          <td style="color: #c7254e">POST</td>
+          <td>
+            A JSON object holding data about the movie to add to the user's list
+            of favorite movies:
+            <pre><code>
+{
+	"title":"Evangelion: 1.0"
+}
+			</code></pre>
+          </td>
+
+          <td>
+            A text message indicating whether the user's favorite movie was
+            succesfully added to their list.
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            Allow users to remove a movie to their list of favorites
+          </td>
+          <td>/users/:[Name]/removeFavorite/:favoriteName</td>
+          <td style="color: #c7254e">DELETE</td>
+          <td>None</td>
+          <td>
+            A text message indicating whether the movie was succesfully removed
+            from the users' favorite-list.
+          </td>
+        </tr>
+        <tr>
+          <td scope="row">
+            Allow existing users to deregister (remove a user by Username)
+          </td>
+          <td>/users/[Username]/</td>
+          <td style="color: #c7254e">DELETE</td>
+          <td>None</td>
+          <td>
+            A text message indicating whether the user's account was succesfully
+            removed.
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </body>
 </html>

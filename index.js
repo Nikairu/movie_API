@@ -106,10 +106,10 @@ app.get('/movies', (req, res) => {
 });
 
 //return specific movie object by name
-app.get('/movies/:name', (req, res) => {
+app.get('/movies/:title', (req, res) => {
   res.json(
     Movies.find((movie) => {
-      return movie.name === req.params.name;
+      return movie.title === req.params.title;
     })
   );
 });
@@ -133,48 +133,12 @@ app.get('/directors', (req, res) => {
   res.json(Directors);
 });
 
-app.get('/director/:name', (req, res) => {
+app.get('/directors/:name', (req, res) => {
   let director = Directors.find((director) => {
     return director.name === req.params.name;
   });
   if (director) {
     res.json(director);
-  } else {
-    res.status(404).send('Director ' + req.params.name + ' was not found.');
-  }
-});
-
-//return specific director's bio by name
-app.get('/director/:name/bio', (req, res) => {
-  let director = Directors.find((director) => {
-    return director.name === req.params.name;
-  });
-  if (director) {
-    res.status(200).send(director.bio);
-  } else {
-    res.status(404).send('Director ' + req.params.name + ' was not found.');
-  }
-});
-
-//return specific director's birth year by name
-app.get('/director/:name', (req, res) => {
-  let director = Directors.find((director) => {
-    return director.name === req.params.name;
-  });
-  if (director) {
-    res.status(200).send(director.birth_year);
-  } else {
-    res.status(404).send('Director ' + req.params.name + ' was not found.');
-  }
-});
-
-//return specific director's death year by name
-app.get('/director/:name', (req, res) => {
-  let director = Directors.find((director) => {
-    return director.name === req.params.name;
-  });
-  if (director) {
-    res.status(200).send(director.death_year);
   } else {
     res.status(404).send('Director ' + req.params.name + ' was not found.');
   }
@@ -291,8 +255,30 @@ app.delete('/users/:name/removeFavorite/:favoriteName', (req, res) => {
 
 // PUT requests
 
+//update user
+app.put('/users/:name', (req, res) => {
+  let newData = req.body;
+
+  let user = Users.find((user) => {
+    return user.name === req.params.name;
+  });
+
+  if (user) {
+    newData.id = user.id;
+    Users = Users.filter((obj) => {
+      return obj.name !== req.params.name;
+    });
+    Users.push(newData);
+    res.status(201).send('Updated data for user ' + req.params.name);
+  } else {
+    res
+      .status(404)
+      .send('User with the name ' + req.params.name + ' was not found.');
+  }
+});
+
 //update password
-app.put('/users/:name/updatePassword/:oldPassword/:newpassword', (req, res) => {
+app.put('/users/:name/updatePassword/:oldPassword/:newPassword', (req, res) => {
   let user = Users.find((user) => {
     return user.name === req.params.name;
   });
