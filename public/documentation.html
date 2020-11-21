@@ -75,11 +75,17 @@ Example:
         </tr>
         <tr>
           <td scope="row">Return data about a genre (description) by name.</td>
-          <td>movies/Genre/:[Name]</td>
+          <td>movies/genres/:[Name]</td>
           <td style="color: #c7254e">GET</td>
           <td>None</td>
           <td>
-            A JSON object holding data about a genre (descriptio) by name.
+            Example:
+            <pre><code>
+{
+    "Name": "Comedy",
+    "Description": "A comedy film is a category of film in which the main emphasis is on humor."
+}
+			  </code></pre>
           </td>
         </tr>
         <tr>
@@ -108,11 +114,13 @@ Example:
           <td>/users</td>
           <td style="color: #c7254e">POST</td>
           <td>
-            Json containing at least the "name" property Example:
+            Json containing at least the "Username", "Password" and "Email"
+            properties Example:
             <pre><code>
 {
-	"name": "lenidiogo",
-	"password": "123+Qwe."
+	"Username": "lenidiogo",
+	"Password": "123+Qwe.",
+	"Email": "lenidiogo@lenidiogo.com"
 }
 			</code></pre>
           </td>
@@ -121,9 +129,10 @@ Example:
             Example:
             <pre><code>
 {
-	"name": "lenidiogo",
-	"password": "123+Qwe.",
-	"id": "24b994f6-8ed0-4889-9659-af983953773e"
+	"Username": "lenidiogo",
+	"Password": "123+Qwe.",
+	"Email": "lenidiogo@lenidiogo.com",
+	"_id": "24b994f6-8ed0-4889-9659-af983953773e"
 }
 </code></pre>
           </td>
@@ -136,51 +145,66 @@ Example:
           <td>/users/:[Name]</td>
           <td style="color: #c7254e">PUT</td>
           <td>
-            Json containing at least an existing username.
+            Json containing at least an existing username, password and email.
             <pre><code>
 {
-	"name": "lenidiogo",
-	"password": "123+Qwe.",
-	"birth_date": "11/01/1990"
+    "Username": "lenidiogo",
+    "Password": "123+Qwe",
+    "Email": "lenidiogo@lenidiogo.com",
+    "Birthday": "11/01/1990"
 }
 			</code></pre>
           </td>
           <td>
-            A text message indicating whether the user's account has succesfully
-            changed.
+            Json containing updated user info
+            <pre><code>
+{
+	"Username": "lenidiogo",
+	"Password": "123+Qwe",
+	"Email": "lenidiogo@lenidiogo.com",
+	"Birthday": "11/01/1990"
+}
+			</code></pre>
           </td>
         </tr>
         <tr>
           <td scope="row">
             Allow users to add a movie to their list of favorites
           </td>
-          <td>/users/:[Name]/addFavouriteMovie</td>
+          <td>/users/:Username/Movies/:MovieID</td>
           <td style="color: #c7254e">POST</td>
+          <td>None</td>
           <td>
-            A JSON object holding data about the movie to add to the user's list
-            of favorite movies:
+            Json containing updated user info
             <pre><code>
 {
-	"title":"Evangelion: 1.0"
+	"Username": "lenidiogo",
+	"Password": "123+Qwe",
+	"Email": "lenidiogo@lenidiogo.com",
+	"Birthday": "11/01/1990"
+	"FavoriteMovies":["7d6f564d6d3d57d9d2eh"]
 }
 			</code></pre>
-          </td>
-
-          <td>
-            A text message indicating whether the user's favorite movie was
-            succesfully added to their list.
           </td>
         </tr>
         <tr>
           <td scope="row">
             Allow users to remove a movie to their list of favorites
           </td>
-          <td>/users/:[Name]/removeFavorite/:favoriteName</td>
+          <td>/users/:Username/Movies/:MovieID</td>
           <td style="color: #c7254e">DELETE</td>
           <td>None</td>
           <td>
-            A text message indicating whether the movie was succesfully removed
-            from the users' favorite-list.
+            Json containing updated user info
+            <pre><code>
+{
+	"Username": "lenidiogo",
+	"Password": "123+Qwe",
+	"Email": "lenidiogo@lenidiogo.com",
+	"Birthday": "11/01/1990"
+	"FavoriteMovies":["7d6f564d6d3d57d9d2eh"]
+}
+			</code></pre>
           </td>
         </tr>
         <tr>
