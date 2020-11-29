@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 const uuid = require('uuid');
 const passport = require('passport');
 require('./passport');
-const moment = require('moment');
 const app = express();
 const { check, validationResult } = require('express-validator');
-
 const cors = require('cors');
+const mongoose = require('mongoose');
+const Models = require('./models.js');
+let auth = require('./auth')(app);
 
 let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
@@ -28,14 +29,10 @@ app.use(
   })
 );
 
-const mongoose = require('mongoose');
-
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
-
-const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
@@ -45,8 +42,6 @@ app.use(morgan('common'));
 
 // GET requests
 app.use(express.static('public'));
-
-let auth = require('./auth')(app);
 
 app.get('/', (req, res) => {
   res.send('Hello there, welcome to the movie club!');
@@ -219,11 +214,6 @@ app.delete(
 //update user
 app.put(
   '/users/:Username',
-  // Validation logic here for request
-  //you can either use a chain of methods like .not().isEmpty()
-  //which means "opposite of isEmpty" in plain english "is not empty"
-  //or use .isLength({min: 5}) which means
-  //minimum value of 5 characters are only allowed
   [
     check('Username', 'Username is required').isLength({ min: 5 }),
     check(
@@ -235,6 +225,11 @@ app.put(
   ],
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
+    let errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
     Users.findOneAndUpdate(
       { Username: req.params.Username },
       {
