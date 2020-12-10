@@ -33,9 +33,13 @@ app.get('/', (req, res) => {
 });
 
 //return all movies
-app.get('/movies', (req, res) => {
-  Movies.find().then((movies) => res.json(movies));
-});
+app.get(
+  '/movies',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Movies.find().then((movies) => res.json(movies));
+  }
+);
 
 //return specific movie object by name
 app.get(
