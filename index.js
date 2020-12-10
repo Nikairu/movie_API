@@ -12,13 +12,7 @@ const Models = require('./models.js');
 let auth = require('./auth')(app);
 
 //let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-
-app.all('*', function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:38313');
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Headers', 'Content-Type');
-  next();
-});
+app.options('*', cors());
 
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
