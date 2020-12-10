@@ -11,18 +11,26 @@ const mongoose = require('mongoose');
 const Models = require('./models.js');
 let auth = require('./auth')(app);
 
-//let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
-var allowCrossDomain = function (req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Content-Type, Authorization, Content-Length, X-Requested-With'
-  );
-  next();
-};
+let allowedOrigins = [
+  'http://localhost:38313',
+  'https://nikairu-flix-app.herokuapp.com',
+];
 
-app.use(allowCrossDomain);
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        // If a specific origin isn’t found on the list of allowed origins
+        let message =
+          'The CORS policy for this application doesn’t allow access from origin ' +
+          origin;
+        return callback(new Error(message), false);
+      }
+      return callback(null, true);
+    },
+  })
+);
 
 mongoose.connect(process.env.CONNECTION_URI, {
   useNewUrlParser: true,
