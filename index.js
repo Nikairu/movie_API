@@ -10,6 +10,7 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const Models = require('./models.js');
 let auth = require('./auth')(app);
+cors = require('./cors');
 
 //let allowedOrigins = ['http://localhost:8080', 'http://testsite.com'];
 
