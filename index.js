@@ -41,6 +41,15 @@ app.get(
   }
 );
 
+//return user data
+app.get(
+  '/user',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Users.find({ Name: req.params.name }).then((users) => res.json(users));
+  }
+);
+
 //return specific movie object by name
 app.get(
   '/movies/:title',
