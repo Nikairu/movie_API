@@ -43,7 +43,7 @@ app.get(
 
 //return user data
 app.get(
-  '/user',
+  '/user/:name',
   passport.authenticate('jwt', { session: false }),
   (req, res) => {
     Users.find({ Name: req.params.name }).then((users) => res.json(users));
